@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import Request, HTTPException, Depends, APIRouter
 import random
 import string
@@ -51,6 +52,11 @@ async def login(request: Request, username: str, password: str, clientSalt: str,
     finalPass = str(hashlib.sha256((salt[request.client.host] + user.password + clientSalt).encode('utf-8')).hexdigest())
     if finalPass != password:
         raise HTTPException(status_code=401, detail="password incorrect")
+
+
+    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    user.last_login = timestamp
+    db.commit()
 
     return { "first_name": user.first_name, "last_name": user.last_name, "email": user.email, "role": user.role_id}
 
