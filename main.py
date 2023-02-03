@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 import core.models.models as models
 
 SALT_LENGTH = 4
+USER_TYPE = ["admin", "moderator", "user"]
 
 app = FastAPI()
 
@@ -66,7 +67,7 @@ async def login(request: Request, username: str, password: str, clientSalt: str,
     if finalPass != password:
         raise HTTPException(status_code=401, detail="password incorrect")
 
-    return { "message": "login successful"}
+    return { "first_name": user.first_name, "last_name": user.last_name, "email": user.email, "role": user.role_id}
 
 
 @app.get("/users")

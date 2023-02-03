@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, func
+from sqlalchemy import Boolean, Column, Integer, String
 from core.models.database import Base
 
 class User(Base):
@@ -12,5 +12,5 @@ class User(Base):
     phone_number = Column(String)
     created = Column(String)
     last_login = Column(String)
-    role_id = Column(Integer)
+    role_id = Column(String)
     active = Column(Boolean)
