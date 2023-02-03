@@ -1,3 +1,7 @@
+to start api <br>
+`uvicorn main:app  --reload --host 0.0.0.0 --port 8000`<br>
+get requirements <br>
+`pip freeze --local > requirements.txt`
 
 ### CRUD 
  - create 

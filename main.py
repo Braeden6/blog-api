@@ -1,6 +1,7 @@
 #main.py
 
 from fastapi import FastAPI, Request, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 from pydantic import BaseModel
 import random
@@ -13,6 +14,17 @@ import core.models.models as models
 SALT_LENGTH = 4
 
 app = FastAPI()
+
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -41,17 +53,20 @@ async def login(request: Request):
     return { "salt": salt[request.client.host]}
 
 @app.post("/login")
-async def login(request: Request, username: str, password: str, clientSalt: str):
+async def login(request: Request, username: str, password: str, clientSalt: str, db: Session = Depends(get_db)):
     global salt
     if salt.get(request.client.host) == None:
         raise HTTPException(status_code=400, detail="no salt requested from this ip")
-    finalPass = str(hashlib.sha256((salt[request.client.host] + savedPassword + clientSalt).encode('utf-8')).hexdigest())
-    return { "account found": savedUsername == username, "password correct": password == finalPass}
+    
+    user = db.query(models.User).filter(models.User.email == username).first()
+    if user == None:
+        raise HTTPException(status_code=404, detail="user not found")
 
+    finalPass = str(hashlib.sha256((salt[request.client.host] + user.password + clientSalt).encode('utf-8')).hexdigest())
+    if finalPass != password:
+        raise HTTPException(status_code=401, detail="password incorrect")
 
-@app.post("/helper/password")
-async def helperPassword(request: Request, password: str, clientSalt: str, serverSalt: str):
-    return { "password": str(hashlib.sha256((serverSalt + str(hashlib.sha256((password.encode('utf-8'))).hexdigest()) + clientSalt).encode('utf-8')).hexdigest())}
+    return { "message": "login successful"}
 
 
 @app.get("/users")
@@ -59,12 +74,14 @@ async def read_all(db: Session = Depends(get_db)):
     return db.query(models.User).all()
 
 
-'''
 
 '''
 
+@app.post("/helper/password")
+async def helperPassword(request: Request, password: str, clientSalt: str, serverSalt: str):
+    return { "password": str(hashlib.sha256((serverSalt + str(hashlib.sha256((password.encode('utf-8'))).hexdigest()) + clientSalt).encode('utf-8')).hexdigest())}
 
-'''
+
 class Item(BaseModel):
     name: str
     description: Optional[str] = None
