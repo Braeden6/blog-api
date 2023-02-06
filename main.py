@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.models.database import engine, SessionLocal, Base
 from sqlalchemy.orm import Session
 from core.models.user import User
-from router import login, registration
+from router import login, registration, post
 
 SALT_LENGTH = 4
 
@@ -24,6 +24,7 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(login.router)
 app.include_router(registration.router)
+app.include_router(post.router)
 
 
 
