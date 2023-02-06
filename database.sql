@@ -46,7 +46,7 @@ DROP TABLE IF EXISTS `dev-portal`.`technology` ;
 CREATE TABLE IF NOT EXISTS `dev-portal`.`technology` (
   `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `parent_id` BIGINT(20) NOT NULL,
+  `parent_id` BIGINT(20),
   PRIMARY KEY (`id`),
   INDEX `fk_technology_technology_idx` (`parent_id` ASC) VISIBLE,
   CONSTRAINT `fk_technology_technology`
@@ -279,4 +279,17 @@ INSERT INTO `user` VALUES
     
 INSERT INTO `post` VALUES 
   -- id author_id title description slug created udpated post_content--
-	(1,null,1, 'how to install python', null, '/how-to-install-python/', current_timestamp(), null, '{}');
+	(1,null,1, 'how to install python', null, 'how-to-install-python', current_timestamp(), null, '[{"url": "https://i.imgur.com/3GmPd7O.png", "type": "image"}, {"text": "How do I install python?", "type": "text"}]');
+
+INSERT INTO `technology` VALUES
+	(1,"Java", null),
+	(2,"JavaScript", null),
+	(3,"Spring", 1),
+	(4,"NodeJS", 2),
+    (5,"Python", null),
+    (6,"VSCode", null),
+    (7,"ExpressJS", 4);
+
+INSERT INTO `post_tag` VALUES
+	(1,5),
+	(1,6);
