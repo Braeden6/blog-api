@@ -27,7 +27,6 @@ router = APIRouter(
     tags=["login"]
 )
 
-
 def get_db():
     db = SessionLocal()
     try:
@@ -38,7 +37,7 @@ def get_db():
 
 def create_token(id: int, full_name: str):
     encode = {"sub": full_name, "id": id,
-              "exp": datetime.utcnow() + timedelta(minutes=15)}
+              "exp": datetime.utcnow() + timedelta(minutes=60)}
     return jwt.encode(encode, SECRET, algorithm=ALGORITHM)
 
 
@@ -86,6 +85,7 @@ async def login(request: Request, clientSalt: str, form_data: OAuth2PasswordRequ
 
     return {
         "token": create_token(user.id, user.first_name + " " + user.last_name),
+        "id": user.id,
         "first_name": user.first_name,
         "last_name": user.last_name,
         "email": user.email,
