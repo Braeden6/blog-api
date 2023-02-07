@@ -1,4 +1,4 @@
-from sqlalchemy import Column, JSON, BIGINT, VARCHAR, TIMESTAMP, ForeignKey
+from sqlalchemy import Column, JSON, BIGINT, VARCHAR, TIMESTAMP, ForeignKey, TEXT, Boolean
 from core.models.database import Base
 from sqlalchemy.orm import relationship, mapped_column
 
@@ -13,6 +13,8 @@ class Post(Base):
     updated = Column(TIMESTAMP)
     post_content = Column(JSON)
     tags = relationship('Tag', secondary="post_tag", lazy="subquery")
+    comments = relationship('PostComment', lazy="subquery")
+    votes = relationship('VotesPost', lazy="subquery")
     author_id = Column(BIGINT, ForeignKey("user.id"))
     author = relationship("User", lazy="subquery")
 
@@ -28,3 +30,28 @@ class PostTag(Base):
     __tablename__ = "post_tag"
     post_id = Column(BIGINT, ForeignKey("post.id"), primary_key=True)
     technology_id = Column(BIGINT, ForeignKey("technology.id"), primary_key=True)
+
+
+class PostComment(Base):
+    __tablename__ = "post_comment"
+    id = Column(BIGINT, primary_key=True)
+    post_id = Column(BIGINT, ForeignKey("post.id"))
+    post_comment_id = Column(BIGINT, ForeignKey("post_comment.id"))
+    author_id = Column(BIGINT, ForeignKey("user.id"))
+    author = relationship("User", lazy="subquery")
+    comment = Column(TEXT)
+    created = Column(TIMESTAMP)
+    updated = Column(TIMESTAMP)
+    votes = relationship('VotesComment', lazy="subquery")
+
+class VotesPost(Base):
+    __tablename__ = "votes_post"
+    post_id = Column(BIGINT, ForeignKey("post.id"), primary_key=True)
+    user_id = Column(BIGINT, ForeignKey("user.id"), primary_key=True)
+    vote = Column(Boolean)
+
+class VotesComment(Base):
+    __tablename__ = "votes_comment"
+    post_comment_id = Column(BIGINT, ForeignKey("post_comment.id"), primary_key=True)
+    user_id = Column(BIGINT, ForeignKey("user.id"), primary_key=True)
+    vote = Column(Boolean)
