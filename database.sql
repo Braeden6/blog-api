@@ -275,7 +275,10 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 INSERT INTO `user` VALUES 
   -- id email password first_name last_name middle_name phone_number, created, last_login, role_id, active--
-	(1,'braeden.norman@hcl.com', '937e8d5fbb48bd4949536cd65b8d35c426b80d2f830c5c308e2cdec422ae2244', 'Braeden', 'Norman',null, '604-666-7777', current_timestamp(),current_timestamp(), 'admin',1);
+	(1,'braeden.norman6@gmail.com', '937e8d5fbb48bd4949536cd65b8d35c426b80d2f830c5c308e2cdec422ae2244', 'Braeden', 'Norman',null, '604-666-7777', current_timestamp(),current_timestamp(), 'admin',1),
+    (2,'braeden.norman7@gmail.com', '937e8d5fbb48bd4949536cd65b8d35c426b80d2f830c5c308e2cdec422ae2244', 'B', 'Norman',null, '604-666-7777', current_timestamp(),current_timestamp(), 'user',1),
+    (3,'braeden.norman8@gmail.com', '937e8d5fbb48bd4949536cd65b8d35c426b80d2f830c5c308e2cdec422ae2244', 'D', 'Norman',null, '604-666-7777', current_timestamp(),current_timestamp(), 'user',1),
+    (4,'braeden.norman9@gmail.com', '937e8d5fbb48bd4949536cd65b8d35c426b80d2f830c5c308e2cdec422ae2244', 'C', 'Norman',null, '604-666-7777', current_timestamp(),current_timestamp(), 'user',1);
     
 INSERT INTO `post` VALUES 
   -- id author_id title description slug created udpated post_content--
@@ -293,3 +296,18 @@ INSERT INTO `technology` VALUES
 INSERT INTO `post_tag` VALUES
 	(1,5),
 	(1,6);
+    
+INSERT INTO `post_comment` VALUES
+	(1,1,null,1, current_timestamp(), null, "a crazy comment"),
+    (2,1,1,1, current_timestamp(), null, "a another crazy comment"),
+    (3,1,null,1, current_timestamp(), null, "a different comment");
+
+INSERT INTO `votes_post` VALUES
+	(1,1,true),
+    (2,1,true),
+    (3,1,true),
+    (4,1,false);
+
+
+INSERT INTO `votes_comment` VALUES
+	(4,1,false);
