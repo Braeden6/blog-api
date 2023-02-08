@@ -80,7 +80,7 @@ async def get_post(id: int, db: Session = Depends(get_db)):
 async def edit_post(id: int, token: str, db: Session = Depends(get_db)):
     return { "message": "Edit post not implemented yet" }
 
-@router.post("/{id}/delete")
+@router.delete("/{id}/delete")
 async def delete_post(id: int, token: str, db: Session = Depends(get_db)):
     return { "message": "Delete post not implemented yet" }
 
@@ -194,7 +194,7 @@ async def edit_comment(id: int, token: str, newText: str, db: Session = Depends(
     db.commit()
     return { "message": "Edit comment" }
 
-@router.post("/comment/{id}/delete")
+@router.delete("/comment/{id}/delete")
 async def delete_comment(id: int, token: str, db: Session = Depends(get_db)):
     user = await verify_token(token)
     db_comment = db.get(PostComment, id)
@@ -238,5 +238,16 @@ async def get_post(slug: str, token: str, db: Session = Depends(get_db)):
     db_post = db.query(Post).filter(Post.slug == slug).first()
     if db_post == None:
         raise HTTPException(status_code=404, detail="Post not found")
+
+    # get all comment TODO: make this better
+    all_sub_comments = db_post.comments.copy()
+    while(len(all_sub_comments) > 0):
+        first_comment = all_sub_comments.pop(0)
+        all_sub_comments += first_comment.sub_comments
+
     return db_post
 
+@router.get("s")
+async def get_posts(token: str, db: Session = Depends(get_db)):
+    await verify_token(token)
+    return db.query(Post).all()
