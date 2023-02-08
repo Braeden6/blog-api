@@ -300,6 +300,9 @@ INSERT INTO `post_tag` VALUES
 INSERT INTO `post_comment` VALUES
 	(1,1,null,1, current_timestamp(), null, "a crazy comment"),
     (2,1,1,1, current_timestamp(), null, "a another crazy comment"),
+    (4,1,2,1, current_timestamp(), null, "a another crazy comment"),
+    (5,1,1,1, current_timestamp(), null, "a another crazy comment"),
+    (6,1,4,1, current_timestamp(), null, "a another crazy comment"),
     (3,1,null,1, current_timestamp(), null, "a different comment");
 
 INSERT INTO `votes_post` VALUES
