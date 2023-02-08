@@ -226,9 +226,11 @@ async def create_comment_on_post(id: int, token: str, comment: str, db: Session 
     if db_post == None:
         raise HTTPException(status_code=404, detail="Post not found")
     newComment = PostComment(author_id=user.get('id'), post_id=id, comment=comment, created=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    print(newComment.id)
     db.add(newComment)
     db.commit()
-    return { "message": "Created comment" }
+    return db.get(PostComment, newComment.id)
+    
 
 
 
