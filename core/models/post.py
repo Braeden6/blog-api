@@ -1,6 +1,6 @@
 from sqlalchemy import Column, JSON, BIGINT, VARCHAR, TIMESTAMP, ForeignKey, TEXT, Boolean
 from core.models.database import Base
-from sqlalchemy.orm import relationship, mapped_column
+from sqlalchemy.orm import relationship, mapped_column, backref
 
 class Post(Base):
     __tablename__ = "post"
@@ -13,7 +13,7 @@ class Post(Base):
     updated = Column(TIMESTAMP)
     post_content = Column(JSON)
     tags = relationship('Tag', secondary="post_tag", lazy="subquery")
-    comments = relationship('PostComment', lazy="subquery")
+    comments = relationship('PostComment', lazy="subquery", primaryjoin="and_(Post.id==PostComment.post_id," "PostComment.post_comment_id==null())")
     votes = relationship('VotesPost', lazy="subquery")
     author_id = Column(BIGINT, ForeignKey("user.id"))
     author = relationship("User", lazy="subquery")
@@ -36,7 +36,8 @@ class PostComment(Base):
     __tablename__ = "post_comment"
     id = Column(BIGINT, primary_key=True)
     post_id = Column(BIGINT, ForeignKey("post.id"))
-    post_comment_id = Column(BIGINT, ForeignKey("post_comment.id"))
+    post_comment_id = Column(BIGINT, ForeignKey("post_comment.id", ondelete='CASCADE'))
+    sub_comments = relationship('PostComment', backref=backref('parent', cascade='all', lazy='subquery', remote_side=[id]))
     author_id = Column(BIGINT, ForeignKey("user.id"))
     author = relationship("User", lazy="subquery")
     comment = Column(TEXT)
