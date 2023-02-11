@@ -12,12 +12,6 @@ from jose import jwt
 SECRET = "asdjsdvhb2qjkb4e32jkfbasbkn324"
 ALGORITHM = "HS256"
 
-
-SALT_LENGTH = 4
-
-# the recent given salt for each ip
-salt = {}
-
 Base.metadata.create_all(bind=engine)
 
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl="token")
@@ -41,9 +35,6 @@ def create_token(id: int, full_name: str):
     return jwt.encode(encode, SECRET, algorithm=ALGORITHM)
 
 
-def generateRandomString(length: str):
-    return ''.join(random.choice(string.ascii_letters) for _ in range(length))
-
 async def verify_token(token: str = Depends(OAuth2PasswordBearer(tokenUrl="/login"))):
     try:
         payload = jwt.decode(token, SECRET, algorithms=[ALGORITHM])
@@ -54,28 +45,15 @@ async def verify_token(token: str = Depends(OAuth2PasswordBearer(tokenUrl="/logi
         raise HTTPException(status_code=401, detail="Invalid token")
 
 
-# https://stackoverflow.com/questions/3715920/is-it-worth-hashing-passwords-on-the-client-side
-@router.get("/")
-async def login(request: Request):
-    global salt
-    salt[request.client.host] = generateRandomString(SALT_LENGTH)
-    return {"salt": salt[request.client.host]}
-
-
 @router.post("/")
-async def login(request: Request, clientSalt: str, form_data: OAuth2PasswordRequestForm = Depends(),  db: Session = Depends(get_db),):
-    global salt
-    if salt.get(request.client.host) == None:
-        raise HTTPException(
-            status_code=400, detail="no salt requested from this ip")
-
+async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends(),  db: Session = Depends(get_db),):
     user = db.query(User).filter(User.email == form_data.username).first()
     if user == None:
         raise HTTPException(status_code=404, detail="user not found")
 
-    finalPass = str(hashlib.sha256(
-        (salt[request.client.host] + user.password + clientSalt).encode('utf-8')).hexdigest())
-    if finalPass != form_data.password:
+    hashedPass = str(hashlib.sha256((form_data.password + user.salt).encode()).hexdigest())
+
+    if hashedPass != user.password:
         raise HTTPException(status_code=401, detail="password incorrect")
 
     # update last login
