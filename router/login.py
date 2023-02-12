@@ -57,7 +57,7 @@ async def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends
         raise HTTPException(status_code=401, detail="password incorrect")
 
     # update last login
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    timestamp = datetime.now()#.strftime('%Y-%m-%d %H:%M:%S')
     user.last_login = timestamp
     db.commit()
 
