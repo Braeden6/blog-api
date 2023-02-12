@@ -6,8 +6,12 @@ from core.models.database import engine, SessionLocal, Base
 from sqlalchemy.orm import Session
 import bcrypt
 import hashlib
+import re
 
 from core.models.user import User
+
+PASSWORD_MIN_LENGTH = 8
+NAME_MIN_LENGTH = 2
 
 Base.metadata.create_all(bind=engine)
 
@@ -33,11 +37,21 @@ class NewUser(BaseModel):
     middle_name: Optional[str] = None
     phone_number: str
 
+email_regex = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" 
 
-# TODO: check email is valid, check phone number is valid, some sort of check for naming (too long, too short, etc)
+
+# TODO: check phone number is valid
 @router.post("/")
 async def registration(request: Request, newUser: NewUser, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == newUser.email).first()
+
+    if not re.fullmatch(email_regex, newUser.email):
+        raise HTTPException(status_code=400, detail="Invalid email")
+    if len(newUser.password) < PASSWORD_MIN_LENGTH:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters long")
+    if len(newUser.first_name) < NAME_MIN_LENGTH or len(newUser.last_name) < NAME_MIN_LENGTH:
+        raise HTTPException(status_code=400, detail="Name must be at least 2 characters long")
+
     if user != None:
         raise HTTPException(status_code=400, detail="User already exists with that email")
 
@@ -46,7 +60,7 @@ async def registration(request: Request, newUser: NewUser, db: Session = Depends
         raise HTTPException(status_code=400, detail="User already exists with that phone number")
 
     salt = bcrypt.gensalt().hex()
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    timestamp = datetime.now()#.strftime('%Y-%m-%d %H:%M:%S')
 
     hashedPass = str(hashlib.sha256((newUser.password + salt).encode()).hexdigest())
     user = User(email=newUser.email, password= hashedPass, first_name=newUser.first_name,
