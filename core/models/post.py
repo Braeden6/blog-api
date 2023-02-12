@@ -1,4 +1,4 @@
-from sqlalchemy import Column, JSON, BIGINT, VARCHAR, TIMESTAMP, ForeignKey, TEXT, Boolean
+from sqlalchemy import Column, JSON, BIGINT, VARCHAR, TIMESTAMP, ForeignKey, TEXT, Boolean, Enum
 from core.models.database import Base
 from sqlalchemy.orm import relationship, mapped_column, backref
 
@@ -13,7 +13,8 @@ class Post(Base):
     updated = Column(TIMESTAMP)
     post_content = Column(JSON)
     tags = relationship('Tag', secondary="post_tag", lazy="subquery")
-    comments = relationship('PostComment', lazy="subquery", primaryjoin="and_(Post.id==PostComment.post_id," "PostComment.post_comment_id==null())")
+    comments = relationship('PostComment', lazy="subquery", primaryjoin="and_(Post.id==PostComment.post_id," "PostComment.post_comment_id==null()," "PostComment.comment_type=='comment')")
+    answers = relationship('PostComment', lazy="subquery", primaryjoin="and_(Post.id==PostComment.post_id," "PostComment.post_comment_id==null()," "PostComment.comment_type=='answer')")
     votes = relationship('VotesPost', lazy="subquery")
     author_id = Column(BIGINT, ForeignKey("user.id"))
     author = relationship("User", lazy="subquery")
@@ -36,14 +37,16 @@ class PostComment(Base):
     __tablename__ = "post_comment"
     id = Column(BIGINT, primary_key=True)
     post_id = Column(BIGINT, ForeignKey("post.id"))
-    post_comment_id = Column(BIGINT, ForeignKey("post_comment.id", ondelete='CASCADE'))
-    sub_comments = relationship('PostComment', backref=backref('parent', cascade='all', lazy='subquery', remote_side=[id]))
+    post_comment_id = Column(BIGINT, ForeignKey("post_comment.id"))
+    # can only comment on answer
+    comments = relationship('PostComment', lazy="joined")
     author_id = Column(BIGINT, ForeignKey("user.id"))
     author = relationship("User", lazy="subquery")
     comment = Column(TEXT)
     created = Column(TIMESTAMP)
     updated = Column(TIMESTAMP)
     votes = relationship('VotesComment', lazy="subquery")
+    comment_type = Column(Enum('comment', 'answer'))
 
 class VotesPost(Base):
     __tablename__ = "votes_post"
