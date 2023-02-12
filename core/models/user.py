@@ -1,10 +1,12 @@
 from sqlalchemy import Boolean, Column, Integer, String, BigInteger, VARCHAR, TIMESTAMP, Enum
+#from sqlalchemy.types import BigInteger
+from sqlalchemy.dialects import sqlite
 from core.models.database import Base
 from sqlalchemy.orm import deferred
 
 class User(Base):
     __tablename__ = "user"
-    id = Column(BigInteger, primary_key=True, index=True)
+    id = Column(BigInteger().with_variant(sqlite.INTEGER(), 'sqlite'), primary_key=True)
     email = Column(VARCHAR(45), nullable=False, unique=True)
     password = deferred(Column(VARCHAR(70), nullable=False))
     first_name = Column(VARCHAR(45), nullable=False)
