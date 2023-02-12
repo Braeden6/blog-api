@@ -296,13 +296,15 @@ INSERT INTO `post_tag` VALUES
     
 INSERT INTO `post_comment` VALUES
 	-- id post_id post_comment_id author_id created updated commment version comment_type --
-	(1,1,null,1, current_timestamp(), null, "a crazy comment", 0, 'answer'),
-    (2,1,1,1, current_timestamp(), null, "a another crazy comment", 0, 'answer'),
-    (4,1,2,1, current_timestamp(), null, "a another crazy comment", 0, 'answer'),
-    (5,1,1,1, current_timestamp(), null, "a another crazy comment", 0, 'answer'),
-    (6,1,4,1, current_timestamp(), null, "a another crazy comment", 0, 'answer'),
-    (7,1,0,1, current_timestamp(), null, "a another crazy comment", 0, 'comment'),
-    (3,1,null,1, current_timestamp(), null, "a different comment", 0, 'comment');
+	(1,1,null,1, current_timestamp(), null, "answer 1", 0, 'answer'),
+    (2,1,1,1, current_timestamp(), null, "comment 1 on answer 1", 0, 'comment'),
+    (3,1,null,1, current_timestamp(), null, "comment 1", 0, 'comment'),
+    (4,1,null,1, current_timestamp(), null, "answer 2", 0, 'answer'),
+    (5,1,1,1, current_timestamp(), null, "comment 1 on answer 1", 0, 'comment'),
+    (6,1,1,1, current_timestamp(), null, "comment 2 on answer 1", 0, 'comment'),
+    (7,1,1,1, current_timestamp(), null, "comment 3 on answer 1", 0, 'comment'),
+    (8,1,null,1, current_timestamp(), null, "comment 2", 0, 'comment');
+    
 
 INSERT INTO `votes_post` VALUES
 	(1,1,true),
