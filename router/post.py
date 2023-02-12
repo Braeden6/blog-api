@@ -6,6 +6,7 @@ from core.models.database import SessionLocal, Base, engine
 from core.models.post import Post, Tag, PostComment, VotesComment, VotesPost
 from sqlalchemy.orm import Session
 from router.login import verify_token
+import router.answer as answer
 
 
 Base.metadata.create_all(bind=engine)
@@ -14,6 +15,8 @@ router = APIRouter(
     prefix="/post",
     tags=["post"]
 )
+
+router.include_router(answer.router)
 
 
 def get_db():
@@ -230,8 +233,6 @@ async def create_comment_on_post(id: int, token: str, comment: str, db: Session 
     db.add(newComment)
     db.commit()
     return db.get(PostComment, newComment.id)
-    
-
 
 
 @router.get("/{slug}")
@@ -242,10 +243,9 @@ async def get_post(slug: str, token: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Post not found")
 
     # get all comment TODO: make this better
-    all_sub_comments = db_post.comments.copy()
-    while(len(all_sub_comments) > 0):
-        first_comment = all_sub_comments.pop(0)
-        all_sub_comments += first_comment.sub_comments
+    for comment in db_post.comments:
+        print(comment.comments)
+
 
     return db_post
 
