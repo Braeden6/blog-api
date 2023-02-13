@@ -6,19 +6,12 @@ import json
 
 client = TestClient(app)
 
-def reset_db():
+def reset_users():
     conn = sqlite3.connect("test.db")
     sql = 'DELETE FROM user'
     cur = conn.cursor()
     cur.execute(sql)
     conn.commit()
-
-# email 
-# password
-# first_name
-# last_name
-# middle_name
-# phone_number
 
 def default_user():
     return {
@@ -30,7 +23,7 @@ def default_user():
     }
 
 def setup_duplicate():
-    reset_db()
+    reset_users()
     response = client.post("/registration", json=default_user())
     assert response.status_code == 200
 
@@ -58,7 +51,7 @@ def test_duplicate_email():
     assert response.content == b'{"detail":"User already exists with that phone number"}'
 
 def test_invalid_email():
-    reset_db()
+    reset_users()
     new_user = default_user()
     new_user["email"] = "braeden.norman7gmail.com"
     response = client.post("/registration", json=new_user)
@@ -76,7 +69,7 @@ def test_invalid_email():
     assert response.content == b'{"detail":"Invalid email"}'
 
 def test_name_too_short():
-    reset_db()
+    reset_users()
     new_user = default_user()
     new_user["first_name"] = "B"
     response = client.post("/registration", json=new_user)
@@ -90,7 +83,7 @@ def test_name_too_short():
     assert response.content == b'{"detail":"Name must be at least 2 characters long"}'
 
 def test_password_too_short():
-    reset_db()
+    reset_users()
     new_user = default_user()
     new_user["password"] = "test123"
     response = client.post("/registration", json=new_user)
@@ -98,7 +91,7 @@ def test_password_too_short():
     assert response.content == b'{"detail":"Password must be at least 8 characters long"}'
 
 def test_login_basic():
-    reset_db()
+    reset_users()
     new_user = default_user()
     response = client.post("/registration", json=default_user())
     assert response.status_code == 200
