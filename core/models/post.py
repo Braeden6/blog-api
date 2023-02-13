@@ -1,4 +1,4 @@
-from sqlalchemy import Column, JSON, BIGINT, VARCHAR, TIMESTAMP, ForeignKey, TEXT, Boolean, Enum
+from sqlalchemy import Column, JSON, BIGINT, VARCHAR, TIMESTAMP, ForeignKey, TEXT, Boolean, Enum, Integer
 from core.models.database import Base
 from sqlalchemy.orm import relationship, mapped_column, backref
 
@@ -47,6 +47,7 @@ class PostComment(Base):
     updated = Column(TIMESTAMP)
     votes = relationship('VotesComment', lazy="subquery")
     comment_type = Column(Enum('comment', 'answer'))
+    #version = Column(Integer)
 
 class VotesPost(Base):
     __tablename__ = "votes_post"

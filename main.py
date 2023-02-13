@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from core.models.database import engine, SessionLocal, Base
 from sqlalchemy.orm import Session
 from core.models.user import User
-from router import login, registration, post, comment
+from router import login, registration, post, answer, comment, votes
 from strawberry.fastapi import GraphQLRouter
 from strawberry.types import Info
 import strawberry
@@ -50,6 +50,8 @@ app.include_router(login.router)
 app.include_router(registration.router)
 app.include_router(post.router)
 app.include_router(comment.router)
+app.include_router(answer.router)
+app.include_router(votes.router)
 app.include_router(graphql_router, prefix="/graphql")
 
 
