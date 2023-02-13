@@ -291,8 +291,8 @@ INSERT INTO `technology` VALUES
     (7,"ExpressJS", 4);
 
 INSERT INTO `post_tag` VALUES
-	(1,5),
-	(1,6);
+	(5,1),
+	(6,1);
     
 INSERT INTO `post_comment` VALUES
 	-- id post_id post_comment_id author_id created updated commment version comment_type --
@@ -300,18 +300,15 @@ INSERT INTO `post_comment` VALUES
     (2,1,1,1, current_timestamp(), null, "comment 1 on answer 1", 0, 'comment'),
     (3,1,null,1, current_timestamp(), null, "comment 1", 0, 'comment'),
     (4,1,null,1, current_timestamp(), null, "answer 2", 0, 'answer'),
-    (5,1,1,1, current_timestamp(), null, "comment 1 on answer 1", 0, 'comment'),
-    (6,1,1,1, current_timestamp(), null, "comment 2 on answer 1", 0, 'comment'),
-    (7,1,1,1, current_timestamp(), null, "comment 3 on answer 1", 0, 'comment'),
+    (5,1,1,1, current_timestamp(), null, "comment 2 on answer 1", 0, 'comment'),
+    (6,1,1,1, current_timestamp(), null, "comment 3 on answer 1", 0, 'comment'),
+    (7,1,1,1, current_timestamp(), null, "comment 4 on answer 1", 0, 'comment'),
     (8,1,null,1, current_timestamp(), null, "comment 2", 0, 'comment');
     
 
 INSERT INTO `votes_post` VALUES
-	(1,1,true),
-    (2,1,true),
-    (3,1,true),
-    (4,1,false);
+	(1,1,true);
 
 
 INSERT INTO `votes_comment` VALUES
-	(4,1,false);
+	(1,1,false);
