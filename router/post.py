@@ -6,8 +6,6 @@ from core.models.database import SessionLocal, Base, engine
 from core.models.post import Post, Tag, PostComment, VotesComment, VotesPost
 from sqlalchemy.orm import Session
 from router.login import verify_token
-import router.answer as answer
-import router.comment as comment
 
 
 Base.metadata.create_all(bind=engine)
@@ -23,31 +21,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
-@router.get("/posts")
-async def get_all_posts(token: str, db: Session = Depends(get_db)):
-    await verify_token(token)
-    return db.query(Post).all()
-
-@router.get("/post/{slug}")
-async def get_post(slug: str, token: str, db: Session = Depends(get_db)):
-    await verify_token(token)
-    db_post = db.query(Post).filter(Post.slug == slug).first()
-    if db_post == None:
-        raise HTTPException(status_code=404, detail="Post not found")
-
-    # get all comment TODO: make this better
-    for comment in db_post.comments:
-        print(comment.comments)
-    return db_post
-
-@router.get("/post/{id}")
-async def get_post(id: int, db: Session = Depends(get_db)):
-    db_post = db.get(Post, id)
-    if db_post == None:
-        raise HTTPException(status_code=404, detail="Post not found")
-    return db_post
-
 
 
 class NewPost(BaseModel):
@@ -77,10 +50,16 @@ async def create_post(post: NewPost, db: Session = Depends(get_db)):
         author_id=user.get('id'),
         slug=slug,
         created=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        tags=tags)
+        tags=tags,
+        version=0)
     db.add(db_post)
     db.commit()
     return db_post
+
+@router.get("/post/create")
+async def get_tags(token: str, db: Session = Depends(get_db)):
+    await verify_token(token)
+    return db.query(Tag).all()
 
 # https://api.stackexchange.com/docs?tab=category#docs
 @router.post("/post/{id}/edit")
@@ -100,7 +79,6 @@ async def vote_post(id: int, token: str, db: Session, upVote: bool):
     #db_vote = db.query(VotesPost).filter(VotesPost.user_id == user.get('id'), VotesPost.post_id == id).first()
     #if db_vote != None:
     #    raise HTTPException(status_code=400, detail="Vote already exists")
-    print(user)
     newVote = VotesPost(user_id=user.get('id'), post_id=id, vote=upVote)
     db.merge(newVote)
     db.commit()
@@ -139,3 +117,27 @@ async def undo_upvote_post(id: int, token: str, db: Session = Depends(get_db)):
 async def undo_downvote_post(id: int, token: str, db: Session = Depends(get_db)):
     votes = await undo_vote_post(id, token, db, False)
     return votes
+
+
+
+@router.get("/posts")
+async def get_all_posts(token: str, db: Session = Depends(get_db)):
+    await verify_token(token)
+    return db.query(Post).all()
+
+@router.get("/post/{slug}")
+async def get_post(slug: str, token: str, db: Session = Depends(get_db)):
+    await verify_token(token)
+    db_post = db.query(Post).filter(Post.slug == slug).first()
+    if db_post == None:
+        raise HTTPException(status_code=404, detail="Post not found") 
+    return db_post
+
+@router.get("/post/id/{id}")
+async def get_post(id: int, token: str, db: Session = Depends(get_db)):
+    await verify_token(token)
+    print(id)
+    db_post = db.query(Post).filter(Post.id == id).first()
+    if db_post == None:
+        raise HTTPException(status_code=404, detail="Post not found")
+    return db_post
