@@ -18,6 +18,7 @@ class Post(Base):
     votes = relationship('VotesPost', lazy="subquery")
     author_id = Column(BIGINT, ForeignKey("user.id"))
     author = relationship("User", lazy="subquery")
+    version = Column(Integer, default=0)
 
 class Tag(Base):
     __tablename__ = "technology"
@@ -47,7 +48,7 @@ class PostComment(Base):
     updated = Column(TIMESTAMP)
     votes = relationship('VotesComment', lazy="subquery")
     comment_type = Column(Enum('comment', 'answer'))
-    #version = Column(Integer)
+    version = Column(Integer, default=0)
 
 class VotesPost(Base):
     __tablename__ = "votes_post"
