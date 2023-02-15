@@ -48,7 +48,7 @@ async def create_answer_on_post(token: str, post_id: int, comment: str, db: Sess
         raise HTTPException(status_code=404, detail="Post not found")
     newAnswer = PostComment(
         author_id=user.get('id'), 
-        post_id=id, 
+        post_id=post_id, 
         comment=comment, 
         created=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         comment_type="answer")
