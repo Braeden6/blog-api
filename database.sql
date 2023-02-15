@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `dev-portal`.`post_comment` (
   `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated` TIMESTAMP NULL,
   `comment` TEXT NOT NULL,
-  `verison` INT NOT NULL,
+  `version` INT NOT NULL,
   `comment_type` ENUM('comment', 'answer') NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_post_comment_post1_idx` (`post_id` ASC) VISIBLE,
@@ -262,6 +262,34 @@ CREATE TABLE IF NOT EXISTS `dev-portal`.`post_tag` (
   CONSTRAINT `fk_table3_post1`
     FOREIGN KEY (`post_id`)
     REFERENCES `dev-portal`.`post` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `dev-portal`.`requests`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `dev-portal`.`requests` ;
+
+CREATE TABLE IF NOT EXISTS `dev-portal`.`requests` (
+  `id` BIGINT(20) NOT NULL auto_increment,
+  `user_id` BIGINT(20),
+  `requested` TIMESTAMP NOT NULL,
+  `request_method` VARCHAR(10) NOT NULL,
+  `request_query` VARCHAR(255) NOT NULL,
+  `request_path` VARCHAR(255) NOT NULL,
+  `request_header` TEXT NULL,
+  `request_body` TEXT NULL,
+  `client_ip` VARCHAR(45) NOT NULL,
+  `response_status_code` INT NOT NULL,
+  `response_header` TEXT NOT NULL,
+  `response_body` TEXT NOT NULL,
+  `latency` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_requests_user1_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_requests_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `dev-portal`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
