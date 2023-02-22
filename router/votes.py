@@ -48,3 +48,118 @@ async def get_votes_on_comment(comment_id: int, token: str, db: Session = Depend
     if db_comment == None or db_comment.comment_type != "comment":
         raise HTTPException(status_code=404, detail="Comment not found")
     return db_comment.votes
+
+# VOTING HELPERS
+async def upvote(id: int, token: str, db: Session, upVote: bool, type: str):
+    user = await verify_token(token)
+    db_answer = db.get(PostComment, id)
+    if db_answer == None or db_answer.comment_type != type:
+        raise HTTPException(status_code=404, detail= type + " not found")
+    newVote = VotesComment(user_id=user.get('id'), post_comment_id=id, vote=upVote)
+    db.merge(newVote)
+    db.commit()
+    return db.query(VotesComment).filter(VotesComment.post_comment_id == id).all()
+
+async def undo_vote(id: int, token: str, db: Session, undoUpVote: bool, type : str):
+    user = await verify_token(token)
+    db_answer = db.get(PostComment, id)
+    if db_answer == None or db_answer.comment_type != type:
+        raise HTTPException(status_code=404, detail=type + " not found")
+    db_vote = db.query(VotesComment).filter(VotesComment.user_id == user.get('id'), VotesComment.post_comment_id == id).first()
+    if db_vote == None:
+        raise HTTPException(status_code=404, detail="Vote not found")
+    if db_vote.vote != undoUpVote:
+        raise HTTPException(status_code=400, detail=  "Vote is down vote" if undoUpVote else "Vote is up vote")
+    db.delete(db_vote)
+    db.commit()
+
+# VOTING ON ANSWERS
+@router.post("/answer/{answer_id}/upvote")
+async def upvote_answer(token: str, answer_id: int, db: Session = Depends(get_db)):  
+    votes = await upvote(answer_id, token, db, True, 'answer')
+    return votes
+
+@router.post("/answer/{answer_id}/downvote")
+async def upvote_answer(token: str, answer_id: int, db: Session = Depends(get_db)):  
+    votes = await upvote(answer_id, token, db, False, 'answer')
+    return votes
+
+@router.delete("/answer/{answer_id}/upvote/undo")
+async def undo_upvote_answer(token: str, answer_id: int, db: Session = Depends(get_db)):  
+    undo_vote(answer_id, token, db, True, 'answer')
+    return {"message": "Vote undone"}
+
+@router.delete("/answer/{answer_id}/downvote/undo")
+async def undo_downvote_answer(token: str, answer_id: int, db: Session = Depends(get_db)):
+    undo_vote(answer_id, token, db, False, 'answer')
+    return {"message": "Vote undone"}
+
+# VOTING ON COMMENTS
+@router.post("/comment/{id}/upvote")
+async def upvote_comment(id: int, token: str, db: Session = Depends(get_db)):
+    votes = await upvote(id, token, db, True, 'comment')
+    return votes
+
+@router.post("/comment/{id}/downvote")
+async def downvote_comment(id: int, token: str, db: Session = Depends(get_db)):
+    votes = await upvote(id, token, db, False, 'comment')
+    return votes
+
+@router.delete("/comment/{id}/upvote/undo")
+async def undo_upvote_comment(id: int, token: str, db: Session = Depends(get_db)):
+    await undo_vote(id, token, db, True, 'comment')
+    return { "message": "Undo up vote comment" }
+
+@router.delete("/comment/{id}/downvote/undo")
+async def undo_downvote_comment(id: int, token: str, db: Session = Depends(get_db)):
+    await undo_vote(id, token, db, False, 'comment')
+    return { "message": "Undo down vote comment" }
+
+# VOTING ON POSTS
+async def vote_post(id: int, token: str, db: Session, upVote: bool):
+    user = await verify_token(token)
+    db_post = db.get(Post, id)
+    if db_post == None:
+        raise HTTPException(status_code=404, detail="Post not found")
+    newVote = VotesPost(user_id=user.get('id'), post_id=id, vote=upVote)
+    db.merge(newVote)
+    db.commit()
+    return db.query(VotesPost).filter(VotesPost.post_id == id).all()
+
+async def undo_vote_post(id: int, token: str, db: Session, undoUpVote: bool):
+    user = await verify_token(token)
+    db_post = db.get(Post, id)
+    if db_post == None:
+        raise HTTPException(status_code=404, detail="Post not found")
+    db_vote = db.query(VotesPost).filter(VotesPost.user_id == user.get('id'), VotesPost.post_id == id).first()
+    if db_vote == None:
+        raise HTTPException(status_code=404, detail="Vote not found")
+    if db_vote.vote != undoUpVote:
+        raise HTTPException(status_code=400, detail= "Vote is down vote" if undoUpVote else "Vote is up vote")
+    db.delete(db_vote)
+    db.commit()
+    return db.query(VotesPost).filter(VotesPost.post_id == id).all()
+
+@router.post("/post/{id}/upvote")
+async def upvote_post(id: int, token: str, db: Session = Depends(get_db)):
+    votes = await vote_post(id, token, db, True)
+    return votes
+    
+@router.post("/post/{id}/downvote")
+async def downvote_post(id: int, token: str, db: Session = Depends(get_db)):
+    votes = await vote_post(id, token, db, False)
+    return votes
+
+@router.delete("/post/{id}/upvote/undo")
+async def undo_upvote_post(id: int, token: str, db: Session = Depends(get_db)):
+    votes = await undo_vote_post(id, token, db, True)
+    return votes
+
+@router.delete("/post/{id}/downvote/undo")
+async def undo_downvote_post(id: int, token: str, db: Session = Depends(get_db)):
+    votes = await undo_vote_post(id, token, db, False)
+    return votes
+
+
+
+
