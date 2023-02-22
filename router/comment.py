@@ -104,53 +104,6 @@ async def edit_comment(id: int, token: str, newText: str, db: Session = Depends(
     db.commit()
     return { "message": "Edit comment" }
 
-# VOTING ON COMMENTS
-async def vote_comment(id: int, token: str, db: Session, upVote: bool):
-    user = await verify_token(token)
-    db_comment = db.get(PostComment, id)
-    if db_comment == None or db_comment.comment_type != "comment":
-        raise HTTPException(status_code=404, detail="Comment not found")
-    # fine to change vote
-    #db_vote = db.query(VotesComment).filter(VotesComment.user_id == user.get('id'), VotesComment.post_comment_id == id).first()
-    #if db_vote != None:
-    #    raise HTTPException(status_code=400, detail="Vote already exists")
-    newVote = VotesComment(user_id=user.get('id'), post_comment_id=id, vote=upVote)
-    db.merge(newVote)
-    db.commit()
-    return db.query(VotesComment).filter(VotesComment.post_comment_id == id).all()
-
-@router.post("/comment/{id}/upvote")
-async def upvote_comment(id: int, token: str, db: Session = Depends(get_db)):
-    votes = await vote_comment(id, token, db, True)
-    return votes
-
-@router.post("/comment/{id}/downvote")
-async def downvote_comment(id: int, token: str, db: Session = Depends(get_db)):
-    votes = await vote_comment(id, token, db, False)
-    return votes
-
-async def undo_vote_comment(id: int, token: str, db: Session, undoUpVote: bool):
-    user = await verify_token(token)
-    db_comment = db.get(PostComment, id)
-    if db_comment == None:
-        raise HTTPException(status_code=404, detail="Comment not found")
-    db_vote = db.query(VotesComment).filter(VotesComment.user_id == user.get('id'), VotesComment.post_comment_id == id).first()
-    if db_vote == None:
-        raise HTTPException(status_code=404, detail="Vote not found")
-    if db_vote.vote != undoUpVote:
-        raise HTTPException(status_code=400, detail=  "Vote is down vote" if undoUpVote else "Vote is up vote")
-    db.delete(db_vote)
-    db.commit()
-
-@router.delete("/comment/{id}/upvote/undo")
-async def undo_upvote_comment(id: int, token: str, db: Session = Depends(get_db)):
-    await undo_vote_comment(id, token, db, True)
-    return { "message": "Undo up vote comment" }
-
-@router.delete("/comment/{id}/downvote/undo")
-async def undo_downvote_comment(id: int, token: str, db: Session = Depends(get_db)):
-    await undo_vote_comment(id, token, db, False)
-    return { "message": "Undo down vote comment" }
 
 
 
