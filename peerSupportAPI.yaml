@@ -1,0 +1,3057 @@
+openapi: 3.0.2
+info:
+  title: FastAPI
+  version: 0.1.0
+paths:
+  /blog/post/create:
+    get:
+      tags:
+        - post
+      summary: Get Post Create Information
+      operationId: get_post_create_information_blog_post_create_get
+      parameters:
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewPostInformationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+    post:
+      tags:
+        - post
+      summary: Create Post
+      operationId: create_post_blog_post_create_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPost'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewPostResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{id}/edit:
+    post:
+      tags:
+        - post
+      summary: Edit Post
+      operationId: edit_post_blog_post__id__edit_post
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPost'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewPostResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{id}/delete:
+    delete:
+      tags:
+        - post
+      summary: Delete Post
+      operationId: delete_post_blog_post__id__delete_delete
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletePostResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/posts:
+    get:
+      tags:
+        - post
+      summary: Get All Posts
+      operationId: get_all_posts_blog_posts_get
+      parameters:
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostListResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/slug/{slug}:
+    get:
+      tags:
+        - post
+      summary: Get Post
+      operationId: get_post_blog_post_slug__slug__get
+      parameters:
+        - required: true
+          schema:
+            title: Slug
+            type: string
+          name: slug
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/id/{id}:
+    get:
+      tags:
+        - post
+      summary: Get Post
+      operationId: get_post_blog_post_id__id__get
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/posts/mine:
+    get:
+      tags:
+        - post
+      summary: Get All User Posts
+      operationId: get_all_user_posts_blog_posts_mine_get
+      parameters:
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostListResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/posts/contribution:
+    get:
+      tags:
+        - post
+      summary: Get All User Posts
+      operationId: get_all_user_posts_blog_posts_contribution_get
+      parameters:
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostListResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{id}/answer/select:
+    get:
+      tags:
+        - post
+      summary: Select Answer
+      operationId: select_answer_blog_post__id__answer_select_get
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelectAnswerResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{id}/answer/unselect:
+    get:
+      tags:
+        - post
+      summary: Select Answer
+      operationId: select_answer_blog_post__id__answer_unselect_get
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelectAnswerResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/comment/{id}:
+    get:
+      tags:
+        - comment
+      summary: Get Comment
+      operationId: get_comment_blog_comment__id__get
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{post_id}/comments:
+    get:
+      tags:
+        - comment
+      summary: Get Comments On Post
+      operationId: get_comments_on_post_blog_post__post_id__comments_get
+      parameters:
+        - required: true
+          schema:
+            title: Post Id
+            type: integer
+          name: post_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/answer/{answer_id}/comments:
+    get:
+      tags:
+        - comment
+      summary: Get Comments On Answer
+      operationId: get_comments_on_answer_blog_answer__answer_id__comments_get
+      parameters:
+        - required: true
+          schema:
+            title: Answer Id
+            type: integer
+          name: answer_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{post_id}/comment/create:
+    post:
+      tags:
+        - comment
+      summary: Create Comment On Post
+      operationId: create_comment_on_post_blog_post__post_id__comment_create_post
+      parameters:
+        - required: true
+          schema:
+            title: Post Id
+            type: integer
+          name: post_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCommentSchema'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/answer/{answer_id}/comment/create:
+    post:
+      tags:
+        - comment
+      summary: Create Comment On Answer
+      operationId: create_comment_on_answer_blog_answer__answer_id__comment_create_post
+      parameters:
+        - required: true
+          schema:
+            title: Answer Id
+            type: integer
+          name: answer_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MergeCommentSchema'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/comment/{id}/delete:
+    delete:
+      tags:
+        - comment
+      summary: Delete Comment
+      operationId: delete_comment_blog_comment__id__delete_delete
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeCommentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/comment/{id}/edit:
+    post:
+      tags:
+        - comment
+      summary: Edit Comment
+      operationId: edit_comment_blog_comment__id__edit_post
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MergeCommentSchema'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeCommentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/answer/{answer_id}:
+    get:
+      tags:
+        - answer
+      summary: Get Answer
+      operationId: get_answer_blog_answer__answer_id__get
+      parameters:
+        - required: true
+          schema:
+            title: Answer Id
+            type: integer
+          name: answer_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{post_id}/answers:
+    get:
+      tags:
+        - answer
+      summary: Get Answers On Post
+      operationId: get_answers_on_post_blog_post__post_id__answers_get
+      parameters:
+        - required: true
+          schema:
+            title: Post Id
+            type: integer
+          name: post_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswersResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{post_id}/answer/create:
+    post:
+      tags:
+        - answer
+      summary: Create Answer On Post
+      operationId: create_answer_on_post_blog_post__post_id__answer_create_post
+      parameters:
+        - required: true
+          schema:
+            title: Post Id
+            type: integer
+          name: post_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnswerSchema'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/answer/{answer_id}/edit:
+    post:
+      tags:
+        - answer
+      summary: Edit Answer
+      operationId: edit_answer_blog_answer__answer_id__edit_post
+      parameters:
+        - required: true
+          schema:
+            title: Answer Id
+            type: integer
+          name: answer_id
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAnswerSchema'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/answer/{answer_id}/delete:
+    delete:
+      tags:
+        - answer
+      summary: Delete Comment
+      operationId: delete_comment_blog_answer__answer_id__delete_delete
+      parameters:
+        - required: true
+          schema:
+            title: Answer Id
+            type: integer
+          name: answer_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAnswerResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{post_id}/votes:
+    get:
+      tags:
+        - vote
+      summary: Get Votes On Post
+      operationId: get_votes_on_post_blog_post__post_id__votes_get
+      parameters:
+        - required: true
+          schema:
+            title: Post Id
+            type: integer
+          name: post_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VotesResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/answer/{answer_id}/votes:
+    get:
+      tags:
+        - vote
+      summary: Get Votes On Answer
+      operationId: get_votes_on_answer_blog_answer__answer_id__votes_get
+      parameters:
+        - required: true
+          schema:
+            title: Answer Id
+            type: integer
+          name: answer_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VotesResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/comment/{comment_id}/votes:
+    get:
+      tags:
+        - vote
+      summary: Get Votes On Comment
+      operationId: get_votes_on_comment_blog_comment__comment_id__votes_get
+      parameters:
+        - required: true
+          schema:
+            title: Comment Id
+            type: integer
+          name: comment_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VotesResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/answer/{answer_id}/upvote:
+    post:
+      tags:
+        - vote
+      summary: Upvote Answer
+      operationId: upvote_answer_blog_answer__answer_id__upvote_post
+      parameters:
+        - required: true
+          schema:
+            title: Answer Id
+            type: integer
+          name: answer_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/answer/{answer_id}/downvote:
+    post:
+      tags:
+        - vote
+      summary: Upvote Answer
+      operationId: upvote_answer_blog_answer__answer_id__downvote_post
+      parameters:
+        - required: true
+          schema:
+            title: Answer Id
+            type: integer
+          name: answer_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/answer/{answer_id}/upvote/undo:
+    delete:
+      tags:
+        - vote
+      summary: Undo Upvote Answer
+      operationId: undo_upvote_answer_blog_answer__answer_id__upvote_undo_delete
+      parameters:
+        - required: true
+          schema:
+            title: Answer Id
+            type: integer
+          name: answer_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UndoVoteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/answer/{answer_id}/downvote/undo:
+    delete:
+      tags:
+        - vote
+      summary: Undo Downvote Answer
+      operationId: undo_downvote_answer_blog_answer__answer_id__downvote_undo_delete
+      parameters:
+        - required: true
+          schema:
+            title: Answer Id
+            type: integer
+          name: answer_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UndoVoteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/comment/{id}/upvote:
+    post:
+      tags:
+        - vote
+      summary: Upvote Comment
+      operationId: upvote_comment_blog_comment__id__upvote_post
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/comment/{id}/downvote:
+    post:
+      tags:
+        - vote
+      summary: Downvote Comment
+      operationId: downvote_comment_blog_comment__id__downvote_post
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/comment/{id}/upvote/undo:
+    delete:
+      tags:
+        - vote
+      summary: Undo Upvote Comment
+      operationId: undo_upvote_comment_blog_comment__id__upvote_undo_delete
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UndoVoteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/comment/{id}/downvote/undo:
+    delete:
+      tags:
+        - vote
+      summary: Undo Downvote Comment
+      operationId: undo_downvote_comment_blog_comment__id__downvote_undo_delete
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UndoVoteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{id}/upvote:
+    post:
+      tags:
+        - vote
+      summary: Upvote Post
+      operationId: upvote_post_blog_post__id__upvote_post
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{id}/downvote:
+    post:
+      tags:
+        - vote
+      summary: Downvote Post
+      operationId: downvote_post_blog_post__id__downvote_post
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{id}/upvote/undo:
+    delete:
+      tags:
+        - vote
+      summary: Undo Upvote Post
+      operationId: undo_upvote_post_blog_post__id__upvote_undo_delete
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UndoVoteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/post/{id}/downvote/undo:
+    delete:
+      tags:
+        - vote
+      summary: Undo Downvote Post
+      operationId: undo_downvote_post_blog_post__id__downvote_undo_delete
+      parameters:
+        - required: true
+          schema:
+            title: Id
+            type: integer
+          name: id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UndoVoteResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/notifications/{user_id}:
+    get:
+      tags:
+        - notifications
+      summary: Get User Notifications
+      operationId: get_user_notifications_blog_notifications__user_id__get
+      parameters:
+        - required: true
+          schema:
+            title: User Id
+            type: integer
+          name: user_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseListNotification'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/notifications/{notifications_id}/dismiss:
+    post:
+      tags:
+        - notifications
+      summary: Mark As Viewed
+      operationId: mark_as_viewed_blog_notifications__notifications_id__dismiss_post
+      parameters:
+        - required: true
+          schema:
+            title: Notifications Id
+            type: integer
+          name: notifications_id
+          in: path
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotification'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+  /blog/notifications/dismiss/all:
+    post:
+      tags:
+        - notifications
+      summary: Mark All As Viewed
+      operationId: mark_all_as_viewed_blog_notifications_dismiss_all_post
+      parameters:
+        - required: true
+          schema:
+            title: Notifications Id
+            type: integer
+          name: notifications_id
+          in: query
+        - required: true
+          schema:
+            title: Token
+            type: string
+          name: token
+          in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotification'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error401'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error400'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error500'
+components:
+  schemas:
+    AnswerResponse:
+      title: AnswerResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        answer:
+          title: Answer
+          allOf:
+            - $ref: '#/components/schemas/AnswerSchema'
+          default:
+            id: 1
+            comment: This is a comment
+            created: '2023-02-22T22:12:28.519547'
+            comment_type: comment
+            author_id: 1
+            post_id: 1
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully retrieved answer
+    AnswerSchema:
+      title: AnswerSchema
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+          default: 1
+        comment:
+          title: Comment
+          type: string
+          default: This is a comment
+        created:
+          title: Created
+          type: string
+          format: date-time
+          default: '2023-02-22T22:12:28.519547'
+        updated:
+          title: Updated
+          type: string
+          format: date-time
+        comment_type:
+          title: Comment Type
+          type: string
+          default: comment
+        author_id:
+          title: Author Id
+          type: integer
+          default: 1
+        post_comment_id:
+          title: Post Comment Id
+          type: integer
+        post_id:
+          title: Post Id
+          type: integer
+          default: 1
+    AnswersResponse:
+      title: AnswersResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        answers:
+          title: Answers
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerSchema'
+          default:
+            - id: 1
+              comment: This is a comment
+              created: '2023-02-22T22:12:28.519547'
+              comment_type: comment
+              author_id: 1
+              post_id: 1
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully retrieved answers
+    ChangeCommentResponse:
+      title: ChangeCommentResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully deleted/edited comment
+    CommentResponse:
+      title: CommentResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        comment:
+          title: Comment
+          allOf:
+            - $ref: '#/components/schemas/CommentSchema'
+          default:
+            id: 1
+            comment: This is a comment
+            created: '2023-02-22T22:12:28.543987'
+            comment_type: comment
+            author_id: 1
+            post_id: 1
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully retrieved comment
+    CommentSchema:
+      title: CommentSchema
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+          default: 1
+        comment:
+          title: Comment
+          type: string
+          default: This is a comment
+        created:
+          title: Created
+          type: string
+          format: date-time
+          default: '2023-02-22T22:12:28.543987'
+        updated:
+          title: Updated
+          type: string
+          format: date-time
+        comment_type:
+          title: Comment Type
+          type: string
+          default: comment
+        author_id:
+          title: Author Id
+          type: integer
+          default: 1
+        post_comment_id:
+          title: Post Comment Id
+          type: integer
+        post_id:
+          title: Post Id
+          type: integer
+          default: 1
+    CommentsResponse:
+      title: CommentsResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        comments:
+          title: Comments
+          type: array
+          items:
+            $ref: '#/components/schemas/CommentSchema'
+          default:
+            - id: 1
+              comment: This is a comment
+              created: '2023-02-22T22:12:28.543987'
+              comment_type: comment
+              author_id: 1
+              post_id: 1
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully retrieved comments
+    CreateAnswerSchema:
+      title: CreateAnswerSchema
+      required:
+        - token
+        - comment
+      type: object
+      properties:
+        token:
+          title: Token
+          type: string
+        comment:
+          title: Comment
+          type: string
+    DeleteAnswerResponse:
+      title: DeleteAnswerResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully deleted answer
+    DeletePostResponse:
+      title: DeletePostResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully deleted post
+    Error400:
+      title: Error400
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: failure
+        message:
+          title: Message
+          type: string
+          default: Bad request
+        code:
+          title: Code
+          type: integer
+          default: 400
+    Error401:
+      title: Error401
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: failure
+        message:
+          title: Message
+          type: string
+          default: Invalid token or Authorization
+        code:
+          title: Code
+          type: integer
+          default: 401
+    Error404:
+      title: Error404
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: failure
+        message:
+          title: Message
+          type: string
+          default: Not found
+        code:
+          title: Code
+          type: integer
+          default: 404
+    Error500:
+      title: Error500
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: failure
+        message:
+          title: Message
+          type: string
+          default: Internal server error
+        code:
+          title: Code
+          type: integer
+          default: 500
+    MergeCommentSchema:
+      title: MergeCommentSchema
+      required:
+        - comment
+        - token
+      type: object
+      properties:
+        comment:
+          title: Comment
+          type: string
+        token:
+          title: Token
+          type: string
+    NewCommentSchema:
+      title: NewCommentSchema
+      required:
+        - comment
+        - token
+      type: object
+      properties:
+        comment:
+          title: Comment
+          type: string
+        token:
+          title: Token
+          type: string
+    NewPost:
+      title: NewPost
+      type: object
+      properties:
+        token:
+          title: Token
+          type: string
+          default: ebc.edf.123
+        title:
+          title: Title
+          type: string
+          default: My new post
+        description:
+          title: Description
+          type: string
+        post_content:
+          title: Post Content
+          default:
+            - type: image
+              url: https://example.com/image.png
+            - type: text
+              text: This is a text
+        technology_ids:
+          title: Technology Ids
+          type: array
+          items: {}
+          default:
+            - Python
+            - VScode
+    NewPostInformationResponse:
+      title: NewPostInformationResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        tags:
+          title: Tags
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillTag'
+          default:
+            - id: 1
+              name: Python
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully retrieved post information
+    NewPostResponse:
+      title: NewPostResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        post_id:
+          title: Post Id
+          type: integer
+          default: 1
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully created post
+    NotificationSchema:
+      title: NotificationSchema
+      type: object
+      properties:
+        from_id:
+          title: From Id
+          type: integer
+          default: 1
+        first_name:
+          title: First Name
+          type: string
+          default: Jane
+        last_name:
+          title: Last Name
+          type: string
+          default: Doe
+        created:
+          title: Created
+          type: string
+          format: date-time
+          default: '2023-02-22T22:12:29.342519'
+        type:
+          title: Type
+          type: string
+          default: comment
+        status:
+          title: Status
+          type: string
+          default: new
+        note:
+          title: Note
+          type: string
+          default: more detail generated by the server
+        url:
+          title: Url
+          type: string
+          default: https://localhost:3000/post/1
+        post_id:
+          title: Post Id
+          type: integer
+          default: 1
+        post_title:
+          title: Post Title
+          type: string
+          default: This is a post title
+    PostListResponse:
+      title: PostListResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        posts:
+          title: Posts
+          type: array
+          items:
+            $ref: '#/components/schemas/PostSimpleSchema'
+          default:
+            - id: 1
+              title: 'Error Encountered During Tarmac Setup: error code 404'
+              first_name: Kevin
+              last_name: Zhou
+              created: '2023-02-22T22:12:28.473754'
+              tags:
+                - id: 1
+                  name: Python
+              votes: 0
+              answers: 0
+              description: You can try to request .....
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully retrieved posts
+    PostResponse:
+      title: PostResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        post:
+          title: Post
+          allOf:
+            - $ref: '#/components/schemas/PostSchema'
+          default:
+            id: 1
+            title: 'Error Encountered During Tarmac Setup: error code 404'
+            first_name: Kevin
+            last_name: Zhou
+            created: '2023-02-22T22:12:28.474754'
+            tags:
+              - id: 1
+                name: Python
+            votes:
+              - vote: 1
+                post_id: 1
+                user_id: 1
+            description: You can try to request .....
+            post_content:
+              - type: image
+                url: https://example.com/image.png
+              - type: text
+                text: This is a text
+            status: open
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully retrieved post
+    PostSchema:
+      title: PostSchema
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+          default: 1
+        title:
+          title: Title
+          type: string
+          default: 'Error Encountered During Tarmac Setup: error code 404'
+        first_name:
+          title: First Name
+          type: string
+          default: Kevin
+        last_name:
+          title: Last Name
+          type: string
+          default: Zhou
+        created:
+          title: Created
+          type: string
+          format: date-time
+          default: '2023-02-22T22:12:28.474754'
+        updated:
+          title: Updated
+          type: string
+          format: date-time
+        tags:
+          title: Tags
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillTag'
+          default:
+            - id: 1
+              name: Python
+        votes:
+          title: Votes
+          type: array
+          items:
+            $ref: '#/components/schemas/VoteSchema'
+          default:
+            - vote: 1
+              post_id: 1
+              user_id: 1
+        description:
+          title: Description
+          type: string
+          default: You can try to request .....
+        post_content:
+          title: Post Content
+          default:
+            - type: image
+              url: https://example.com/image.png
+            - type: text
+              text: This is a text
+        status:
+          title: Status
+          type: string
+          default: open
+    PostSimpleSchema:
+      title: PostSimpleSchema
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+          default: 1
+        title:
+          title: Title
+          type: string
+          default: 'Error Encountered During Tarmac Setup: error code 404'
+        first_name:
+          title: First Name
+          type: string
+          default: Kevin
+        last_name:
+          title: Last Name
+          type: string
+          default: Zhou
+        created:
+          title: Created
+          type: string
+          format: date-time
+          default: '2023-02-22T22:12:28.473754'
+        updated:
+          title: Updated
+          type: string
+          format: date-time
+        tags:
+          title: Tags
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillTag'
+          default:
+            - id: 1
+              name: Python
+        votes:
+          title: Votes
+          type: integer
+          default: 0
+        answers:
+          title: Answers
+          type: integer
+          default: 0
+        description:
+          title: Description
+          type: string
+          default: You can try to request .....
+    ResponseListNotification:
+      title: ResponseListNotification
+      type: object
+      properties:
+        notifications:
+          title: Notifications
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationSchema'
+          default:
+            - from_id: 1
+              first_name: Jane
+              last_name: Doe
+              created: '2023-02-22T22:12:29.342519'
+              type: comment
+              status: new
+              note: more detail generated by the server
+              url: https://localhost:3000/post/1
+              post_id: 1
+              post_title: This is a post title
+        status:
+          title: Status
+          type: string
+          default: success
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully retrieved notifications
+    ResponseNotification:
+      title: ResponseNotification
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully changed notification status
+    SelectAnswerResponse:
+      title: SelectAnswerResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully selected/unselected answer
+    SkillTag:
+      title: SkillTag
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+          default: 1
+        name:
+          title: Name
+          type: string
+          default: Python
+        parent_id:
+          title: Parent Id
+          type: integer
+    UndoVoteResponse:
+      title: UndoVoteResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully removed vote
+    VoteResponse:
+      title: VoteResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully added vote
+    VoteSchema:
+      title: VoteSchema
+      type: object
+      properties:
+        vote:
+          title: Vote
+          type: integer
+          default: 1
+        post_id:
+          title: Post Id
+          type: integer
+          default: 1
+        user_id:
+          title: User Id
+          type: integer
+          default: 1
+    VotesResponse:
+      title: VotesResponse
+      type: object
+      properties:
+        status:
+          title: Status
+          type: string
+          default: success
+        votes:
+          title: Votes
+          type: array
+          items:
+            $ref: '#/components/schemas/VoteSchema'
+          default:
+            - vote: 1
+              post_id: 1
+              user_id: 1
+        code:
+          title: Code
+          type: integer
+          default: 200
+        message:
+          title: Message
+          type: string
+          default: Successfully retrieved votes

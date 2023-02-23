@@ -48,13 +48,61 @@ class NewPostInformationResponse(BaseModel):
     code: int = 200
     message: str = "Successfully retrieved post information"
 
-class DeletePost(BaseModel):
-    token : str = "ebc.edf.123"
-
 class DeletePostResponse(BaseModel):
     status: str = "success"
     code: int = 200
     message: str = "Successfully deleted post"
+
+class VoteSchema(BaseModel):
+    vote: int = 1
+    post_id: int = 1
+    user_id: int = 1
+
+class PostSimpleSchema(BaseModel):
+    id: int = 1
+    title: str = "Error Encountered During Tarmac Setup: error code 404"
+    first_name: str = "Kevin"
+    last_name: str = "Zhou"
+    created: datetime = datetime.now()
+    updated: datetime = None
+    tags: list[SkillTag] = [ SkillTag()]
+    votes: int = 0
+    answers: int = 0
+    description: Optional[str] = "You can try to request ....."
+
+class PostSchema(BaseModel):
+    id: int = 1
+    title: str = "Error Encountered During Tarmac Setup: error code 404"
+    first_name: str = "Kevin"
+    last_name: str = "Zhou"
+    created: datetime = datetime.now()
+    updated: datetime = None
+    tags: list[SkillTag] = [ SkillTag()]
+    votes: list[VoteSchema] = [VoteSchema()]
+    description: Optional[str] = "You can try to request ....."
+    post_content: object = [ { "type": "image" , "url" : "https://example.com/image.png"}, { "type": "text" , "text" : "This is a text"}]
+    status: str = "open"
+
+class PostResponse(BaseModel):
+    status: str = "success"
+    post: PostSchema = PostSchema()
+    code: int = 200
+    message: str = "Successfully retrieved post"
+
+class PostListResponse(BaseModel):
+    status: str = "success"
+    posts: list[PostSimpleSchema] = [PostSimpleSchema()]
+    code: int = 200
+    message: str = "Successfully retrieved posts"
+
+class SelectAnswerRequest(BaseModel):
+    token: str = "ebc.edf.123"
+    answer_id: int = 1
+
+class SelectAnswerResponse(BaseModel):
+    status: str = "success"
+    code: int = 200
+    message: str = "Successfully selected/unselected answer"
 
 # TODO:
 # verify post_content is the right structure 
@@ -111,8 +159,8 @@ async def edit_post(id: int, newPost: NewPost, db: Session = Depends(get_db)) ->
     return NewPostResponse(post_id=id)
 
 @router.delete("/post/{id}/delete", responses={400: { "model" : Error400 }, 401: { "model" : Error401 }, 404: { "model" : Error404 }, 422: {"model": Error400}, 500: { "model" : Error500 }})
-async def delete_post(id: int, deletePost: DeletePost, db: Session = Depends(get_db)) -> DeletePostResponse:
-    user = await verify_token(deletePost.token)
+async def delete_post(id: int, token: str, db: Session = Depends(get_db)) -> DeletePostResponse:
+    user = await verify_token(token)
     db_post = db.query(Post).filter(Post.id == id).first()
     if db_post == None:
         raise HTTPException(status_code=404, detail="Post not found")
@@ -123,12 +171,12 @@ async def delete_post(id: int, deletePost: DeletePost, db: Session = Depends(get
     return DeletePostResponse()
 
 @router.get("/posts", responses={400: { "model" : Error400 }, 401: { "model" : Error401 }, 404: { "model" : Error404 }, 422: {"model": Error400}, 500: { "model" : Error500 }})
-async def get_all_posts(token: str, db: Session = Depends(get_db)):
+async def get_all_posts(token: str, db: Session = Depends(get_db)) -> PostListResponse:
     await verify_token(token)
     return db.query(Post).all()
 
-@router.get("/post/{slug}", responses={400: { "model" : Error400 }, 401: { "model" : Error401 }, 404: { "model" : Error404 }, 422: {"model": Error400}, 500: { "model" : Error500 }})
-async def get_post(slug: str, token: str, db: Session = Depends(get_db)):
+@router.get("/post/slug/{slug}", responses={400: { "model" : Error400 }, 401: { "model" : Error401 }, 404: { "model" : Error404 }, 422: {"model": Error400}, 500: { "model" : Error500 }})
+async def get_post(slug: str, token: str, db: Session = Depends(get_db)) -> PostResponse:
     await verify_token(token)
     db_post = db.query(Post).filter(Post.slug == slug).first()
     if db_post == None:
@@ -136,9 +184,29 @@ async def get_post(slug: str, token: str, db: Session = Depends(get_db)):
     return db_post
 
 @router.get("/post/id/{id}", responses={400: { "model" : Error400 }, 401: { "model" : Error401 }, 404: { "model" : Error404 }, 422: {"model": Error400}, 500: { "model" : Error500 }})
-async def get_post(id: int, token: str, db: Session = Depends(get_db)):
+async def get_post(id: int, token: str, db: Session = Depends(get_db)) -> PostResponse:
     await verify_token(token)
     db_post = db.query(Post).filter(Post.id == id).first()
     if db_post == None:
         raise HTTPException(status_code=404, detail="Post not found")
     return db_post
+
+@router.get("/posts/mine", responses={400: { "model" : Error400 }, 401: { "model" : Error401 }, 404: { "model" : Error404 }, 422: {"model": Error400}, 500: { "model" : Error500 }})
+async def get_all_user_posts(token: str, db: Session = Depends(get_db)) -> PostListResponse:
+    #await verify_token(body.token)
+    return None #db.query(Post).all()
+
+@router.get("/posts/contribution", responses={400: { "model" : Error400 }, 401: { "model" : Error401 }, 404: { "model" : Error404 }, 422: {"model": Error400}, 500: { "model" : Error500 }})
+async def get_all_user_posts(token: str, db: Session = Depends(get_db)) -> PostListResponse:
+    #await verify_token(body.token)
+    return None #db.query(Post).all()
+
+@router.get("/post/{id}/answer/select", responses={400: { "model" : Error400 }, 401: { "model" : Error401 }, 404: { "model" : Error404 }, 422: {"model": Error400}, 500: { "model" : Error500 }})
+async def select_answer(id: int, token: str, db: Session = Depends(get_db)) -> SelectAnswerResponse:
+    #await verify_token(body.token)
+    return None
+
+@router.get("/post/{id}/answer/unselect", responses={400: { "model" : Error400 }, 401: { "model" : Error401 }, 404: { "model" : Error404 }, 422: {"model": Error400}, 500: { "model" : Error500 }})
+async def select_answer(id: int, token: str, db: Session = Depends(get_db)) -> SelectAnswerResponse:
+    #await verify_token(body.token)
+    return None

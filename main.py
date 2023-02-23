@@ -93,8 +93,8 @@ async def log_requests(request: Request, call_next, ):
 
 Base.metadata.create_all(bind=engine)
 
-app.include_router(login.router)
-app.include_router(registration.router)
+#app.include_router(login.router)
+#app.include_router(registration.router)
 app.include_router(post.router)
 app.include_router(comment.router)
 app.include_router(answer.router)
